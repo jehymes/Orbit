@@ -1,0 +1,154 @@
+[gd_scene load_steps=18 format=3 uid="uid://bt7ttreti43yh"]
+
+[ext_resource type="Script" path="res://Scripts/hud.gd" id="1_25mv6"]
+[ext_resource type="Texture2D" uid="uid://d1dq6nkg4boyx" path="res://Assets/Collectible/Collectible_bounce.png" id="1_621nf"]
+[ext_resource type="FontFile" uid="uid://b38wd0pj8h7n" path="res://Assets/Font/MINECRAFT.TTF" id="3_totat"]
+[ext_resource type="PackedScene" uid="uid://ctpltf07yrjr5" path="res://Props/Models/Score.tscn" id="4_u6exd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scng7"]
+atlas = ExtResource("1_621nf")
+region = Rect2(0, 0, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnwvw"]
+atlas = ExtResource("1_621nf")
+region = Rect2(81, 0, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ynsp"]
+atlas = ExtResource("1_621nf")
+region = Rect2(162, 0, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uain4"]
+atlas = ExtResource("1_621nf")
+region = Rect2(243, 0, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tk6u8"]
+atlas = ExtResource("1_621nf")
+region = Rect2(324, 0, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5agr3"]
+atlas = ExtResource("1_621nf")
+region = Rect2(0, 243, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_36tgx"]
+atlas = ExtResource("1_621nf")
+region = Rect2(81, 243, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2chey"]
+atlas = ExtResource("1_621nf")
+region = Rect2(162, 243, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jt552"]
+atlas = ExtResource("1_621nf")
+region = Rect2(243, 243, 81, 81)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kly7d"]
+atlas = ExtResource("1_621nf")
+region = Rect2(324, 243, 81, 81)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_77kaw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scng7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnwvw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ynsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uain4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tk6u8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5agr3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_36tgx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2chey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jt552")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kly7d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_s7j22"]
+font = ExtResource("3_totat")
+
+[sub_resource type="LabelSettings" id="LabelSettings_g236n"]
+font = ExtResource("3_totat")
+font_size = 24
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_25mv6")
+
+[node name="Background" type="ParallaxBackground" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Collectible" type="AnimatedSprite2D" parent="Background"]
+position = Vector2(16, 24)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_77kaw")
+autoplay = "default"
+
+[node name="Separator" type="Label" parent="Background"]
+offset_left = 28.0
+offset_top = 17.0
+offset_right = 70.0
+offset_bottom = 40.0
+text = "x
+"
+label_settings = SubResource("LabelSettings_s7j22")
+
+[node name="Collect" type="Label" parent="Background"]
+offset_left = 43.0
+offset_top = 16.0
+offset_right = 83.0
+offset_bottom = 40.0
+text = "0
+"
+label_settings = SubResource("LabelSettings_g236n")
+
+[node name="ScoreBox" type="HBoxContainer" parent="Background"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2.0
+offset_right = 38.0
+offset_bottom = 40.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.67
+
+[node name="Score_1" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+position = Vector2(-25, 0)
+
+[node name="Score_2" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+
+[node name="Score_3" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+position = Vector2(25, 0)

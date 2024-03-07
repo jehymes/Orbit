@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cqd3j3yus1yml"]
+
+[node name="HittBox" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(0, 8, 28, 27, 0, -26, -28, 27)

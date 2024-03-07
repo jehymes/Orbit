@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bt4k68cbvl1cy"]
+
+[ext_resource type="Script" path="res://Game/circle.gd" id="1_36gf7"]
+[ext_resource type="PackedScene" uid="uid://bvaghf663u86b" path="res://Props/Player/player.tscn" id="1_jj6mv"]
+[ext_resource type="Script" path="res://Scripts/Shapes/draw_circle.gd" id="2_18wir"]
+[ext_resource type="Script" path="res://Scripts/Shapes/circle_follow.gd" id="2_gbvku"]
+
+[sub_resource type="Curve2D" id="Curve2D_d5ea8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 272, 80, 0, 0, 0, 0, 392, 192, 0, 0, 0, 0, 408, 272, 0, 0, 0, 0, 304, 392, 0, 0, 0, 0, 128, 376, 0, 0, 0, 0, 40, 272, 0, 0, 0, 0, 80, 152, 0, 0, 0, 0, 152, 88, 0, 0, 0, 0, 272, 80)
+}
+point_count = 9
+
+[node name="Debug" type="Node2D"]
+
+[node name="DrawCircle" type="Node2D" parent="."]
+script = ExtResource("2_18wir")
+
+[node name="Circle" type="Path2D" parent="."]
+curve = SubResource("Curve2D_d5ea8")
+script = ExtResource("1_36gf7")
+
+[node name="CircleFollow" type="PathFollow2D" parent="Circle"]
+position = Vector2(272, 80)
+rotation = 0.750929
+script = ExtResource("2_gbvku")
+speed = 0.01
+
+[node name="Player" parent="Circle/CircleFollow" instance=ExtResource("1_jj6mv")]
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)

@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://ctpltf07yrjr5"]
+
+[ext_resource type="Texture2D" uid="uid://bxoaxonf52brs" path="res://Assets/Numbers/Numbers.png" id="1_niaa6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cfx1b"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7lq5"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7sj5"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cc443"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_up35t"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0y7ba"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jm63w"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cyrhb"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_awa1s"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drsxy"]
+atlas = ExtResource("1_niaa6")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ull4t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cfx1b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7lq5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7sj5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cc443")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_up35t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0y7ba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jm63w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cyrhb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_awa1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drsxy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Score" type="Node2D"]
+
+[node name="Numbers" type="AnimatedSprite2D" parent="."]
+position = Vector2(-32, 0)
+sprite_frames = SubResource("SpriteFrames_ull4t")
+centered = false
