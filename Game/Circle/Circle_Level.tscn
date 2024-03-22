@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3 uid="uid://c8vj7nc01o8pn"]
+
+[ext_resource type="Texture2D" uid="uid://dqhqqq4pvioas" path="res://Assets/Player/Ship.png" id="1_gs51g"]
+[ext_resource type="Script" path="res://Scripts/orbit.gd" id="1_uq5g7"]
+[ext_resource type="PackedScene" uid="uid://db2umg7xq4e74" path="res://Props/Shapes/shape_circle.tscn" id="2_vyrow"]
+[ext_resource type="Script" path="res://Scripts/Shapes/circle.gd" id="3_jbo6d"]
+[ext_resource type="Script" path="res://Scripts/Shapes/circle_follow.gd" id="4_22bfi"]
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="4_tjvoe"]
+[ext_resource type="PackedScene" uid="uid://bp3yfdk2awmb" path="res://Props/Models/explosion.tscn" id="5_5v6gl"]
+
+[sub_resource type="Curve2D" id="Curve2D_5n5y7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i46mp"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ej8h6"]
+radius = 30.1496
+
+[node name="CircleLevel" type="Node2D"]
+script = ExtResource("1_uq5g7")
+
+[node name="_Circle" type="Node2D" parent="."]
+
+[node name="DrawCircle" parent="_Circle" instance=ExtResource("2_vyrow")]
+
+[node name="CircleOut" type="Path2D" parent="_Circle"]
+curve = SubResource("Curve2D_5n5y7")
+script = ExtResource("3_jbo6d")
+
+[node name="CircleFollow" type="PathFollow2D" parent="_Circle/CircleOut"]
+script = ExtResource("4_22bfi")
+
+[node name="_Player" type="Node2D" parent="_Circle/CircleOut/CircleFollow"]
+scale = Vector2(0.3, 0.3)
+
+[node name="PlayerCircle" type="CharacterBody2D" parent="_Circle/CircleOut/CircleFollow/_Player"]
+collision_mask = 12
+script = ExtResource("4_tjvoe")
+deathParticle = ExtResource("5_5v6gl")
+
+[node name="Sprite" type="Sprite2D" parent="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle"]
+texture = ExtResource("1_gs51g")
+
+[node name="Collision" type="CollisionShape2D" parent="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle"]
+shape = SubResource("CircleShape2D_i46mp")
+debug_color = Color(0.207843, 0.513726, 1, 0.639216)
+
+[node name="HittPlayer" type="Area2D" parent="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle" groups=["player"]]
+collision_mask = 12
+
+[node name="CollisionHitt" type="CollisionShape2D" parent="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle/HittPlayer"]
+shape = SubResource("CircleShape2D_ej8h6")
+debug_color = Color(0.8, 0, 0.0901961, 0.513726)
+
+[connection signal="area_entered" from="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle/HittPlayer" to="_Circle/CircleOut/CircleFollow/_Player/PlayerCircle" method="_on_hitt_player_area_entered"]

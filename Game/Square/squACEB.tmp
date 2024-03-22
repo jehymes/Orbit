@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdbd4o1c50ncs"]
+
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_2jidb"]
+[ext_resource type="Script" path="res://Scripts/Shapes/draw_square.gd" id="1_yb07i"]
+[ext_resource type="PackedScene" uid="uid://bp3yfdk2awmb" path="res://Props/Models/explosion.tscn" id="2_5ejnq"]
+[ext_resource type="Texture2D" uid="uid://dqhqqq4pvioas" path="res://Assets/Player/Ship.png" id="3_yudqn"]
+
+[sub_resource type="Curve2D" id="Curve2D_lc4rt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gslyp"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jums0"]
+radius = 30.1496
+
+[node name="Square_Level" type="Node2D"]
+
+[node name="_Square" type="Node2D" parent="."]
+
+[node name="Draw_Square" type="Node2D" parent="_Square"]
+script = ExtResource("1_yb07i")
+
+[node name="SquareOut" type="Path2D" parent="_Square"]
+curve = SubResource("Curve2D_lc4rt")
+
+[node name="SquareFollow" type="PathFollow2D" parent="_Square/SquareOut"]
+
+[node name="PlayerCircle" type="CharacterBody2D" parent="_Square/SquareOut/SquareFollow"]
+collision_mask = 12
+script = ExtResource("1_2jidb")
+deathParticle = ExtResource("2_5ejnq")
+
+[node name="Sprite" type="Sprite2D" parent="_Square/SquareOut/SquareFollow/PlayerCircle"]
+texture = ExtResource("3_yudqn")
+
+[node name="Collision" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/PlayerCircle"]
+shape = SubResource("CircleShape2D_gslyp")
+debug_color = Color(0.207843, 0.513726, 1, 0.639216)
+
+[node name="HittPlayer" type="Area2D" parent="_Square/SquareOut/SquareFollow/PlayerCircle" groups=["player"]]
+collision_mask = 12
+
+[node name="CollisionHitt" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/PlayerCircle/HittPlayer"]
+shape = SubResource("CircleShape2D_jums0")
+debug_color = Color(0.8, 0, 0.0901961, 0.513726)
+
+[connection signal="area_entered" from="_Square/SquareOut/SquareFollow/PlayerCircle/HittPlayer" to="_Square/SquareOut/SquareFollow/PlayerCircle" method="_on_hitt_player_area_entered"]

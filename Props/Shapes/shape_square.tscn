@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dswqjvajg5jvl"]
+
+[ext_resource type="Script" path="res://Scripts/Shapes/draw_square.gd" id="1_otklg"]
+
+[node name="Draw_Square" type="Node2D"]
+script = ExtResource("1_otklg")

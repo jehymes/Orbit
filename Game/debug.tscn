@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dd0hifxa65k8m"]
-
-[ext_resource type="Script" path="res://Scripts/orbit.gd" id="1_qysjl"]
-
-[node name="Debug" type="Node2D"]
-script = ExtResource("1_qysjl")

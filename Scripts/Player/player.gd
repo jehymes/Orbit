@@ -1,15 +1,17 @@
 extends CharacterBody2D
 
-@onready var animation = $Animation
-var is_dead = false
+@export var deathParticle: PackedScene
 
-func on_hitt_box_area_entered(area):
-	if area.is_in_group("enemie"):
-		animation.play("explode")
+func _on_hitt_player_area_entered(area):
+	if area.is_in_group("enemies"):
 		Global.speed = 0
-		if is_dead:
-			self.queue_free()
+		kill()
 
-func on_animation_player_animation_finished(anim_name):
-	if anim_name == "explode":
-		is_dead = true
+func kill():
+	var _particle = deathParticle.instantiate()
+	_particle.position = global_position
+	_particle.rotation = global_rotation
+	_particle.emitting = true
+	get_tree().current_scene.add_child(_particle)
+	
+	queue_free()

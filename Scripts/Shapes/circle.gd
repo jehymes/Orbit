@@ -1,11 +1,9 @@
 extends Path2D
 
-@onready var player = get_node("CircleFollowOut/Player")
+@onready var player = get_node("CircleFollow/_Player")
 var ray_circle = Global.circle_radius + 15
 var center = Global.center
 var out = true
-var player_scale_in = Vector2(0.4, 0.4)
-var player_scale_out = Vector2(0.3, 0.3)
 
 func _ready():
 	create_circle_out()
@@ -32,11 +30,11 @@ func move():
 	if Input.is_action_just_pressed("click"):
 		if out:
 			out = false
-			player.scale = player_scale_in
+			player.scale = Vector2(0.4, 0.4)
 			scale.x = 0.73
 			scale.y = 0.73
 		else:
 			out = true
-			player.scale = player_scale_out
+			player.scale = Vector2(0.3, 0.3)
 			scale.x = 1
 			scale.y = 1

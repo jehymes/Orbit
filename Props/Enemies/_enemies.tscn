@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://camdffvedqw1b"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/enemie.gd" id="1_2kb4w"]
+[ext_resource type="Texture2D" uid="uid://q6ysstjo8ry4" path="res://Assets/Enemie/Enemie.png" id="2_1kal4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_co75g"]
+size = Vector2(62, 62)
+
+[node name="_Enemies" type="Node2D" groups=["enemies"]]
+script = ExtResource("1_2kb4w")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_1kal4")
+
+[node name="HittEnemie" type="Area2D" parent="." groups=["enemies"]]
+collision_layer = 8
+collision_mask = 13
+
+[node name="Collision" type="CollisionShape2D" parent="HittEnemie"]
+shape = SubResource("RectangleShape2D_co75g")
+debug_color = Color(0.937255, 0, 0.129412, 0.658824)
+
+[connection signal="area_entered" from="HittEnemie" to="." method="_on_hitt_enemie_area_entered"]

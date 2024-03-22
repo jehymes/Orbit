@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="1_25mv6"]
 [ext_resource type="Texture2D" uid="uid://d1dq6nkg4boyx" path="res://Assets/Collectible/Collectible_bounce.png" id="1_621nf"]
 [ext_resource type="FontFile" uid="uid://b38wd0pj8h7n" path="res://Assets/Font/MINECRAFT.TTF" id="3_totat"]
-[ext_resource type="PackedScene" uid="uid://ctpltf07yrjr5" path="res://Props/Models/Score.tscn" id="4_u6exd"]
+[ext_resource type="PackedScene" uid="uid://ctpltf07yrjr5" path="res://Props/Models/score.tscn" id="4_d81tl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_scng7"]
 atlas = ExtResource("1_621nf")
@@ -145,10 +145,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.67
 
-[node name="Score_1" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+[node name="Score_1" parent="Background/ScoreBox" instance=ExtResource("4_d81tl")]
 position = Vector2(-25, 0)
 
-[node name="Score_2" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+[node name="Score_2" parent="Background/ScoreBox" instance=ExtResource("4_d81tl")]
 
-[node name="Score_3" parent="Background/ScoreBox" instance=ExtResource("4_u6exd")]
+[node name="Score_3" parent="Background/ScoreBox" instance=ExtResource("4_d81tl")]
 position = Vector2(25, 0)

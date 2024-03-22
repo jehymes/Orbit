@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://crc8nbtxsdrm"]
+
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_q7yn8"]
+[ext_resource type="PackedScene" uid="uid://bp3yfdk2awmb" path="res://Props/Models/explosion.tscn" id="2_rocdb"]
+[ext_resource type="Texture2D" uid="uid://dqhqqq4pvioas" path="res://Assets/Player/Ship.png" id="3_y03ni"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i46mp"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ej8h6"]
+radius = 30.1496
+
+[node name="_Player" type="Node2D"]
+scale = Vector2(0.3, 0.3)
+
+[node name="PlayerCircle" type="CharacterBody2D" parent="."]
+collision_mask = 12
+script = ExtResource("1_q7yn8")
+deathParticle = ExtResource("2_rocdb")
+
+[node name="Sprite" type="Sprite2D" parent="PlayerCircle"]
+texture = ExtResource("3_y03ni")
+
+[node name="Collision" type="CollisionShape2D" parent="PlayerCircle"]
+shape = SubResource("CircleShape2D_i46mp")
+debug_color = Color(0.207843, 0.513726, 1, 0.639216)
+
+[node name="HittPlayer" type="Area2D" parent="PlayerCircle" groups=["player"]]
+collision_mask = 12
+
+[node name="CollisionHitt" type="CollisionShape2D" parent="PlayerCircle/HittPlayer"]
+shape = SubResource("CircleShape2D_ej8h6")
+debug_color = Color(0.8, 0, 0.0901961, 0.513726)
+
+[connection signal="area_entered" from="PlayerCircle/HittPlayer" to="PlayerCircle" method="_on_hitt_player_area_entered"]
