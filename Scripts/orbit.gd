@@ -12,7 +12,8 @@ var col_position_offset = 15
 var count = 0
 
 #Variáveis dos inimigos
-var positions_ene: Array[Vector2]
+var positions_ene_circle: Array[Vector2]
+var positions_ene_square: Array[Vector2]
 var angles_ene: Array[float]
 var ene_position_offset = 9
 
@@ -23,17 +24,21 @@ var g = Global.color_g
 var b = Global.color_b
 
 func _ready():
+	randomize()
 	add_child(hud)
 	
 	match Global.start_level:
 		"Circle":
 			print("Circle_Level")
-			generate_positions_col_circle()
-			generate_positions_enemies()
+			generate_pos_col_circle()
+			generate_pos_ene_circle()
 		"Square":
 			hud.get_node("Background/ColorRect").color = Color(r, g, b, 1)
-			generate_positions_col_square()
-			#generate_positions_enemies()
+			generate_pos_col_square()
+			generate_pos_ene_square()
+			pass
+		"Infinite":
+			hud.get_node("Background/ColorRect").color = Color(r, g, b, 1)
 			pass
 
 func _process(_delta):
@@ -42,9 +47,11 @@ func _process(_delta):
 			add_collectibles_circle()
 			add_enemies_circle()
 		"Square":
-			#hud.get_node("Background/ColorRect").color = Color(1, 0, 1, 1)
-			#add_collectibles_square()
-			#add_enemies_square()
+			add_collectibles_square()
+			add_enemies_square()
+		"Infinite":
+			add_collectibles_line()
+			#add_enemies_line()
 			pass
 
 func add_collectibles_circle():
@@ -97,21 +104,38 @@ func add_enemies_circle():
 	if Global.amount_enemies > 0:
 		if Global.amount_enemies_for_level > 0:
 			# Escolhe o index do posicionamento
-			var index = randi_range(0, positions_ene.size())
+			var index = randi_range(0, positions_ene_circle.size())
 			
 			# Instancia o coletável
 			var enemy = enemie.instantiate()
 			enemy.scale = Vector2(0.3, 0.3)
 			
-			if !is_object_at_position(positions_ene[index-1]):
-				enemy.position = positions_ene[index-1]
+			if !is_object_at_position(positions_ene_circle[index-1]):
+				enemy.position = positions_ene_circle[index-1]
 				enemy.rotation_degrees = rad_to_deg(angles_ene[index-1])
 				add_child(enemy)
 				Global.amount_enemies += -1
 				Global.amount_enemies_for_level += -1
 				return
 
-func generate_positions_col_circle():
+func add_enemies_square():
+	if Global.amount_enemies > 0:
+		if Global.amount_enemies_for_level > 0:
+			# Escolhe o index do posicionamento
+			var index = randi_range(0, positions_ene_square.size() - 1)
+			
+			# Instancia o coletável
+			var enemy = enemie.instantiate()
+			enemy.scale = Vector2(0.3, 0.3)
+			
+			if !is_object_at_position(positions_ene_square[index]):
+				enemy.position = positions_ene_square[index]
+				add_child(enemy)
+				Global.amount_enemies += -1
+				Global.amount_enemies_for_level += -1
+				return
+
+func generate_pos_col_circle():
 	var center = Global.center
 
 	for i in range(Global.points):
@@ -138,7 +162,7 @@ func generate_positions_col_circle():
 			positions_cir.append(collectPosition)
 			angles_cir.append(angle)
 
-func generate_positions_col_square():
+func generate_pos_col_square():
 	for i in range(50):
 		var in_or_out = randi_range(1, 2)
 		var pos_spawn = define_pos_spawn_square(randi_range(1, 4), in_or_out)
@@ -156,8 +180,7 @@ func generate_positions_col_square():
 			# Define as posições para o coletável
 			positions_sqr.append(collectPosition)
 
-
-func generate_positions_enemies():
+func generate_pos_ene_circle():
 	randomize()
 	var center = Global.center
 	var radius_1 = Global.circle_radius + ene_position_offset
@@ -175,13 +198,50 @@ func generate_positions_enemies():
 		if in_or_out == 1:
 			var enemiePosition = center + Vector2(radius_1 * cos(angle), radius_1 * sin(angle))
 			# Define as posições para o coletável
-			positions_ene.append(enemiePosition)
+			positions_ene_circle.append(enemiePosition)
 			angles_ene.append(angle)
 		if in_or_out == 2:
 			var enemiePosition = center + Vector2(radius_2 * cos(angle), radius_2 * sin(angle))
 			# Define as posições para o coletável
-			positions_ene.append(enemiePosition)
+			positions_ene_circle.append(enemiePosition)
 			angles_ene.append(angle)
+
+func generate_pos_ene_square():
+	# Calcula ad posiçoes do inimigo no quadrado externo		
+	var ex_t = define_pos_spawn_square(1, 1)
+	var ex_r = define_pos_spawn_square(2, 1)
+	var ex_d = define_pos_spawn_square(3, 1)
+	var ex_l = define_pos_spawn_square(4, 1)
+	
+	var pos_en_square_ex_t = aply_offset_in_positions(ex_t, ["y", "+", 5])
+	var pos_en_square_ex_r = aply_offset_in_positions(ex_r, ["x", "-", 5])
+	var pos_en_square_ex_d = aply_offset_in_positions(ex_d, ["y", "-", 5])
+	var pos_en_square_ex_l = aply_offset_in_positions(ex_l, ["x", "+", 5])
+	
+	#Define posicionamento do coletável
+	positions_ene_square += pos_en_square_ex_t
+	positions_ene_square += pos_en_square_ex_r
+	positions_ene_square += pos_en_square_ex_d
+	positions_ene_square += pos_en_square_ex_l
+
+	#Calcula ad posiçoes do inimigo no quadrado interno		
+	var in_t = define_pos_spawn_square(1, 2)
+	var in_r = define_pos_spawn_square(2, 2)
+	var in_d = define_pos_spawn_square(3, 2)
+	var in_l = define_pos_spawn_square(4, 2)
+	
+	var pos_en_square_in_t = aply_offset_in_positions(in_t, ["y", "-", 5])
+	var pos_en_square_in_r = aply_offset_in_positions(in_r, ["x", "+", 5])
+	var pos_en_square_in_d = aply_offset_in_positions(in_d, ["y", "+", 5])
+	var pos_en_square_in_l = aply_offset_in_positions(in_l, ["x", "-", 5])
+	
+	#Define posicionamento do coletável
+	positions_ene_square += pos_en_square_in_t
+	positions_ene_square += pos_en_square_in_r
+	positions_ene_square += pos_en_square_in_d
+	positions_ene_square += pos_en_square_in_l
+	
+	positions_ene_square.shuffle()
 
 func is_object_at_position(check: Vector2) -> bool:
 	# Verifica se existe algum objeto na posição
@@ -226,3 +286,35 @@ func define_pos_spawn_square(side_square, in_out) -> Array[Vector2]:
 					_positions.append(Vector2(155, 325 - (i+1)))
 	
 	return _positions
+
+func aply_offset_in_positions(array: Array[Vector2], params: Array) -> Array[Vector2]:
+	var new_position: Array[Vector2] = []
+	for i in range(array.size()):
+		if params[0] == "x":
+			if params[1] == "+":
+				new_position.append(Vector2(array[i].x + params[2], array[i].y))
+			if params[1] == "-":
+				new_position.append(Vector2(array[i].x - params[2], array[i].y))
+		elif params[0] == "y":
+			if params[1] == "+":
+				new_position.append(Vector2(array[i].x, array[i].y + params[2]))
+			if params[1] == "-":
+				new_position.append(Vector2(array[i].x, array[i].y - params[2]))
+		elif params[0] == "xy":
+			if params[1] == "+":
+				new_position.append(Vector2(array[i].x + params[2], array[i].y + params[2]))
+			if params[1] == "-":
+				new_position.append(Vector2(array[i].x - params[2], array[i].y - params[2]))
+			if params[1] == "+-":
+				new_position.append(Vector2(array[i].x + params[2], array[i].y - params[2]))
+			if params[1] == "-+":
+				new_position.append(Vector2(array[i].x - params[2], array[i].y + params[2]))
+	
+	return new_position
+
+func add_collectibles_line():
+	if Global.amount_collectibles > 0:
+		# Instancia o coletável
+		var collect = collectible.instantiate()
+		get_tree().current_scene.add_child(collect)
+		Global.amount_collectibles += -1

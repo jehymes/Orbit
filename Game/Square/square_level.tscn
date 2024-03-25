@@ -33,23 +33,23 @@ script = ExtResource("3_ncv6q")
 [node name="_Player" type="Node2D" parent="_Square/SquareOut/SquareFollow"]
 scale = Vector2(0.3, 0.3)
 
-[node name="PlayerCircle" type="CharacterBody2D" parent="_Square/SquareOut/SquareFollow/_Player"]
+[node name="PlayerSquare" type="CharacterBody2D" parent="_Square/SquareOut/SquareFollow/_Player"]
 collision_mask = 12
 script = ExtResource("1_2jidb")
 deathParticle = ExtResource("2_5ejnq")
 
-[node name="Sprite" type="Sprite2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerCircle"]
+[node name="Sprite" type="Sprite2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerSquare"]
 texture = ExtResource("3_yudqn")
 
-[node name="Collision" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerCircle"]
+[node name="Collision" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerSquare"]
 shape = SubResource("CircleShape2D_gslyp")
 debug_color = Color(0.207843, 0.513726, 1, 0.639216)
 
-[node name="HittPlayer" type="Area2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerCircle" groups=["player"]]
+[node name="HittPlayer" type="Area2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerSquare" groups=["player"]]
 collision_mask = 12
 
-[node name="CollisionHitt" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerCircle/HittPlayer"]
+[node name="CollisionHitt" type="CollisionShape2D" parent="_Square/SquareOut/SquareFollow/_Player/PlayerSquare/HittPlayer"]
 shape = SubResource("CircleShape2D_jums0")
 debug_color = Color(0.8, 0, 0.0901961, 0.513726)
 
-[connection signal="area_entered" from="_Square/SquareOut/SquareFollow/_Player/PlayerCircle/HittPlayer" to="_Square/SquareOut/SquareFollow/_Player/PlayerCircle" method="_on_hitt_player_area_entered"]
+[connection signal="area_entered" from="_Square/SquareOut/SquareFollow/_Player/PlayerSquare/HittPlayer" to="_Square/SquareOut/SquareFollow/_Player/PlayerSquare" method="_on_hitt_player_area_entered"]

@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://cpmedlilngg3y"]
+
+[ext_resource type="Script" path="res://Scripts/orbit.gd" id="1_jukly"]
+[ext_resource type="Script" path="res://Scripts/Shapes/draw_line.gd" id="2_w3vpg"]
+[ext_resource type="Script" path="res://Scripts/Shapes/line.gd" id="3_oh732"]
+[ext_resource type="Script" path="res://Scripts/Shapes/line_follow.gd" id="4_8x6cw"]
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="4_mk1g2"]
+[ext_resource type="PackedScene" uid="uid://bp3yfdk2awmb" path="res://Props/Models/explosion.tscn" id="5_8l51h"]
+[ext_resource type="Texture2D" uid="uid://dqhqqq4pvioas" path="res://Assets/Player/Ship.png" id="6_r4idb"]
+
+[sub_resource type="Curve2D" id="Curve2D_ybop5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wk17o"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m3m70"]
+radius = 30.1496
+
+[node name="Infinite_Level" type="Node2D"]
+script = ExtResource("1_jukly")
+
+[node name="_Infinite" type="Node2D" parent="."]
+
+[node name="Line" type="Path2D" parent="_Infinite"]
+curve = SubResource("Curve2D_ybop5")
+script = ExtResource("3_oh732")
+
+[node name="LineFollow" type="PathFollow2D" parent="_Infinite/Line"]
+script = ExtResource("4_8x6cw")
+
+[node name="Draw_Line" type="Node2D" parent="_Infinite/Line/LineFollow"]
+script = ExtResource("2_w3vpg")
+
+[node name="_Player" type="Node2D" parent="_Infinite"]
+scale = Vector2(0.3, 0.3)
+
+[node name="PlayerLine" type="CharacterBody2D" parent="_Infinite/_Player"]
+collision_mask = 12
+script = ExtResource("4_mk1g2")
+deathParticle = ExtResource("5_8l51h")
+
+[node name="Sprite" type="Sprite2D" parent="_Infinite/_Player/PlayerLine"]
+texture = ExtResource("6_r4idb")
+
+[node name="Collision" type="CollisionShape2D" parent="_Infinite/_Player/PlayerLine"]
+shape = SubResource("CircleShape2D_wk17o")
+debug_color = Color(0.207843, 0.513726, 1, 0.639216)
+
+[node name="HittPlayer" type="Area2D" parent="_Infinite/_Player/PlayerLine" groups=["player"]]
+collision_mask = 12
+
+[node name="CollisionHitt" type="CollisionShape2D" parent="_Infinite/_Player/PlayerLine/HittPlayer"]
+shape = SubResource("CircleShape2D_m3m70")
+debug_color = Color(0.8, 0, 0.0901961, 0.513726)
+
+[connection signal="area_entered" from="_Infinite/_Player/PlayerLine/HittPlayer" to="_Infinite/_Player/PlayerLine" method="_on_hitt_player_area_entered"]

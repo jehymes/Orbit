@@ -11,5 +11,8 @@ var angle_to = 7
 var center = Global.center
 var points = Global.points
 
+func _init():
+	Global.start_level = "Circle"
+
 func _draw():
 	draw_arc(center, radius, angle_from, angle_to, points, color, expessure, alliasing) 
