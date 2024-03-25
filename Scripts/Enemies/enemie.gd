@@ -1,5 +1,10 @@
 extends Node2D
 
+@onready var animation = $Animation
+
+func _ready():
+	animation.play("spawn")
+
 func _on_hitt_enemie_area_entered(area):
 	if area.is_in_group("enemies"):
 		var ene = area.get_parent()

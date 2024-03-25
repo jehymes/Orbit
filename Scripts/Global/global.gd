@@ -4,7 +4,7 @@ extends Node
 var V_WIDTH = ProjectSettings.get_setting("display/window/size/viewport_width")
 var V_HEIGHT = ProjectSettings.get_setting("display/window/size/viewport_height")
 var center = Vector2(V_WIDTH/2, V_HEIGHT/2)
-var start_level = "Square"
+var start_level = "Circle"
 var points = 360
 var level = 0
 var points_to_next_level = 10 if level == 0 else (level+1) * 10
@@ -46,5 +46,5 @@ func add_score_game():
 	score_game += 1
 	speed += 0.001
 
-func next_level(name):
-	start_level = name
+func next_level(_name):
+	start_level = _name

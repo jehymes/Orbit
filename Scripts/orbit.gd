@@ -5,9 +5,9 @@ var collectible = preload("res://Props/Collectibles/_collectibles.tscn")
 var enemie = preload("res://Props/Enemies/_enemies.tscn")
 
 #Variáveis dos coletáveis
-var positions_col: Array[Vector2]
+var positions_cir: Array[Vector2]
 var positions_sqr: Array[Vector2]
-var angles_col: Array[float]
+var angles_cir: Array[float]
 var col_position_offset = 15
 var count = 0
 
@@ -28,67 +28,72 @@ func _ready():
 	match Global.start_level:
 		"Circle":
 			print("Circle_Level")
-			generate_positions_collectibles()
+			generate_positions_col_circle()
 			generate_positions_enemies()
 		"Square":
 			hud.get_node("Background/ColorRect").color = Color(r, g, b, 1)
-			generate_positions_collectibles()
+			generate_positions_col_square()
 			#generate_positions_enemies()
 			pass
 
 func _process(_delta):
 	match Global.start_level:
 		"Circle":
-			add_collectibles()
-			add_enemies()
+			add_collectibles_circle()
+			add_enemies_circle()
 		"Square":
 			#hud.get_node("Background/ColorRect").color = Color(1, 0, 1, 1)
-			add_collectibles()
-			#Add Enemies
+			#add_collectibles_square()
+			#add_enemies_square()
 			pass
 
-func add_collectibles():
+func add_collectibles_circle():
+	if Global.amount_collectibles > 0:
+		var index = randi_range(0, positions_cir.size())
+		
+		# Instancia o coletável
+		var collect = collectible.instantiate()
+		
+		if !is_object_at_position(positions_cir[index-1]):
+			if count < 49:
+				collect.position = positions_cir[index-1]
+				collect.rotation_degrees = rad_to_deg(angles_cir[index-1])
+				get_tree().current_scene.add_child(collect)
+				Global.amount_collectibles += -1
+				count += 1
+			else:
+				var sprite_col = collect.get_node("Sprite")
+				sprite_col.modulate = Color(1,1,0.2)
+				collect.position = positions_cir[index-1]
+				collect.rotation_degrees = rad_to_deg(angles_cir[index-1])
+				get_tree().current_scene.add_child(collect)
+				Global.amount_collectibles += -1
+				count = 0
+			return
+
+func add_collectibles_square():
 	if Global.amount_collectibles > 0:
 		var index = randi_range(0, positions_sqr.size())
 		
 		# Instancia o coletável
 		var collect = collectible.instantiate()
 		
-		match Global.start_level:
-			"Circle":
-				if !is_object_at_position(positions_col[index-1]):
-					if count < 49:
-						collect.position = positions_col[index-1]
-						collect.rotation_degrees = rad_to_deg(angles_col[index-1])
-						get_tree().current_scene.add_child(collect)
-						Global.amount_collectibles += -1
-						count += 1
-					else:
-						var sprite_col = collect.get_node("Sprite")
-						sprite_col.modulate = Color(1,1,0.2)
-						collect.position = positions_col[index-1]
-						collect.rotation_degrees = rad_to_deg(angles_col[index-1])
-						get_tree().current_scene.add_child(collect)
-						Global.amount_collectibles += -1
-						count = 0
-					return
-			"Square":
-				if !is_object_at_position(positions_sqr[index-1]):
-					if count < 49:
-						collect.position = positions_sqr[index-1]
-						get_tree().current_scene.add_child(collect)
-						Global.amount_collectibles += -1
-						count += 1
-					else:
-						var sprite_col = collect.get_node("Sprite")
-						sprite_col.modulate = Color(1,1,0.2)
-						collect.position = positions_sqr[index-1]
-						get_tree().current_scene.add_child(collect)
-						Global.amount_collectibles += -1
-						count = 0
-					return
+		if !is_object_at_position(positions_sqr[index-1]):
+			if count < 49:
+				collect.position = positions_sqr[index-1]
+				get_tree().current_scene.add_child(collect)
+				Global.amount_collectibles += -1
+				count += 1
+			else:
+				var sprite_col = collect.get_node("Sprite")
+				sprite_col.modulate = Color(1,1,0.2)
+				collect.position = positions_sqr[index-1]
+				get_tree().current_scene.add_child(collect)
+				Global.amount_collectibles += -1
+				count = 0
+			return
 
-func add_enemies():
+func add_enemies_circle():
 	if Global.amount_enemies > 0:
 		if Global.amount_enemies_for_level > 0:
 			# Escolhe o index do posicionamento
@@ -106,51 +111,51 @@ func add_enemies():
 				Global.amount_enemies_for_level += -1
 				return
 
-func generate_positions_collectibles():
+func generate_positions_col_circle():
 	var center = Global.center
-		
-	match Global.start_level:
-		"Circle":
-			for i in range(Global.points):
-				var in_or_out = randi_range(1, 2)
 
-				var radius_1 = Global.circle_radius + col_position_offset
-				var radius_2 = Global.circle_radius - col_position_offset
-				
-				# Rotaciona as instâncias para acompanhar o círculo
-				var rotationOffset = deg_to_rad(90)
-				
-				# Calcula a posição do quadrado no círculo
-				var angle = i * (2 * PI / Global.points) + rotationOffset
-					
-				#Define posicionamento do coletável
-				if in_or_out == 1:
-					var collectPosition = center + Vector2(radius_1 * cos(angle), radius_1 * sin(angle))
-					# Define as posições para o coletável
-					positions_col.append(collectPosition)
-					angles_col.append(angle)
-				if in_or_out == 2:
-					var collectPosition = center + Vector2(radius_2 * cos(angle), radius_2 * sin(angle))
-					# Define as posições para o coletável
-					positions_col.append(collectPosition)
-					angles_col.append(angle)
-		"Square":
-			for i in range(50):
-				var in_or_out = randi_range(1, 2)
-				var pos_spawn = define_pos_spawn_square(randi_range(1, 4), in_or_out)
-				
-				#Define posicionamento do coletável
-				if in_or_out == 1:
-					var collectPosition = pos_spawn[randi_range(0, pos_spawn.size()-1)]
-					
-					# Define as posições para o coletável
-					positions_sqr.append(collectPosition)
-					
-				if in_or_out == 2:
-					var collectPosition = pos_spawn[randi_range(0, pos_spawn.size()-1)]
-					
-					# Define as posições para o coletável
-					positions_sqr.append(collectPosition)
+	for i in range(Global.points):
+		var in_or_out = randi_range(1, 2)
+
+		var radius_1 = Global.circle_radius + col_position_offset
+		var radius_2 = Global.circle_radius - col_position_offset
+		
+		# Rotaciona as instâncias para acompanhar o círculo
+		var rotationOffset = deg_to_rad(90)
+		
+		# Calcula a posição do quadrado no círculo
+		var angle = i * (2 * PI / Global.points) + rotationOffset
+			
+		#Define posicionamento do coletável
+		if in_or_out == 1:
+			var collectPosition = center + Vector2(radius_1 * cos(angle), radius_1 * sin(angle))
+			# Define as posições para o coletável
+			positions_cir.append(collectPosition)
+			angles_cir.append(angle)
+		if in_or_out == 2:
+			var collectPosition = center + Vector2(radius_2 * cos(angle), radius_2 * sin(angle))
+			# Define as posições para o coletável
+			positions_cir.append(collectPosition)
+			angles_cir.append(angle)
+
+func generate_positions_col_square():
+	for i in range(50):
+		var in_or_out = randi_range(1, 2)
+		var pos_spawn = define_pos_spawn_square(randi_range(1, 4), in_or_out)
+		
+		#Define posicionamento do coletável
+		if in_or_out == 1:
+			var collectPosition = pos_spawn[randi_range(0, pos_spawn.size()-1)]
+			
+			# Define as posições para o coletável
+			positions_sqr.append(collectPosition)
+			
+		if in_or_out == 2:
+			var collectPosition = pos_spawn[randi_range(0, pos_spawn.size()-1)]
+			
+			# Define as posições para o coletável
+			positions_sqr.append(collectPosition)
+
 
 func generate_positions_enemies():
 	randomize()
@@ -190,34 +195,34 @@ func is_object_at_position(check: Vector2) -> bool:
 	return false
 
 func define_pos_spawn_square(side_square, in_out) -> Array[Vector2]:
-	var positions: Array[Vector2]
+	var _positions: Array[Vector2] = []
 	if in_out == 1:
 		match side_square:
 			1:
 				for i in range(230):
-					positions.append(Vector2(125+(i+1), 125))
+					_positions.append(Vector2(125+(i+1), 125))
 			2:
 				for i in range(230):
-					positions.append(Vector2(355, 125+(i+1)))
+					_positions.append(Vector2(355, 125+(i+1)))
 			3:
 				for i in range(230):
-					positions.append(Vector2(355 - (i+1), 355))
+					_positions.append(Vector2(355 - (i+1), 355))
 			4:
 				for i in range(230):
-					positions.append(Vector2(125, 355 - (i+1)))
+					_positions.append(Vector2(125, 355 - (i+1)))
 	else:
 		match side_square:
 			1:
 				for i in range(170):
-					positions.append(Vector2(155+(i+1), 155))
+					_positions.append(Vector2(155+(i+1), 155))
 			2:
 				for i in range(170):
-					positions.append(Vector2(325, 155+(i+1)))
+					_positions.append(Vector2(325, 155+(i+1)))
 			3:
 				for i in range(170):
-					positions.append(Vector2(325 - (i+1), 325))
+					_positions.append(Vector2(325 - (i+1), 325))
 			4:
 				for i in range(170):
-					positions.append(Vector2(155, 325 - (i+1)))
+					_positions.append(Vector2(155, 325 - (i+1)))
 	
-	return positions
+	return _positions

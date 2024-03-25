@@ -14,6 +14,6 @@ func _on_collectibles_animation_animation_finished(anim_name):
 		anim_finish = true
 		Global.add_score_game()
 		Global.amount_collectibles += 1
-		#Global.add_level()
-		if Global.score_game % Global.points_to_next_level == 0:
-			Global.add_level()
+		#if Global.score_game % Global.points_to_next_level == 0:
+			#Global.add_level()
+		Global.add_level()
